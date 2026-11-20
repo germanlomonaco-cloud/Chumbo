@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chumbo 🌱
 
-## Getting Started
+Propinas y regalos con un QR por persona. Cada propina suma **semillas**.
 
-First, run the development server:
+## Qué hay hecho (meta 1)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- `/german`: perfil de prueba con foto, nombre y botón **Dejar propina**.
+- Montos rápidos de $1.000, $2.000 y $5.000, más un mensaje opcional (140 caracteres).
+- **Pagar**: crea la propina como *pendiente* en Supabase y el cobro en Mercado Pago (Checkout Pro, modo prueba).
+- `/german/gracias`: pantalla de vuelta. **No** da el pago por bueno: espera el aviso de Mercado Pago.
+- `/api/webhooks/mercadopago`: único lugar donde una propina pasa a *aprobada*. Verifica la firma del aviso, consulta el pago real en Mercado Pago y controla monto y moneda.
+- Semillas: 1 cada $100 (se cambia en `src/lib/reglas.ts`).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Seguridad
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Las claves van **sólo** en `.env.local` (tu compu) o en Vercel → Settings → Environment Variables. `.env.local` nunca se sube a GitHub (`.gitignore`).
+- `.env.example` es la plantilla con los nombres de las variables, sin valores.
+- La app se niega a cobrar con credenciales que no sean de prueba mientras `MP_PERMITIR_PRODUCCION` no sea `true`.
+- Los datos de tarjeta nunca pasan por Chumbo: se cargan en Mercado Pago.
+- La tabla `propinas` tiene RLS activado y sin políticas: sólo el servidor puede leerla o escribirla.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Puesta en marcha
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Supabase**: SQL Editor → pegar `supabase/schema.sql` → Run.
+2. **Vercel**: importar el repositorio y cargar las variables de `.env.example`.
+3. **Mercado Pago**: en la aplicación Chumbo → Webhooks → URL de prueba `https://TU-APP.vercel.app/api/webhooks/mercadopago`, evento **Pagos**. Copiar la clave secreta en `MP_WEBHOOK_SECRET`.
+4. Probar un pago con la cuenta compradora de prueba.
