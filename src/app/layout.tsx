@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
+
+// Tipografía del diseño (DM Sans). Next la descarga al compilar y la sirve desde nuestro propio sitio.
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "700", "800"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
   title: "Chumbo",
@@ -9,15 +13,15 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#070908",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-AR">
-      <body className="min-h-dvh antialiased">{children}</body>
+    <html lang="es-AR" className={dmSans.variable}>
+      <body className="min-h-dvh font-sans antialiased">{children}</body>
     </html>
   );
 }

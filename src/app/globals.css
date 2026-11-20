@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
-/* Paleta de Chumbo: fondo negro + verde menta */
+/* Paleta de Chumbo (tomada del prototipo de diseño) */
 @theme {
-  --color-fondo: #000000;
-  --color-panel: #0f1412;
-  --color-borde: #1f2a26;
-  --color-menta: #3ee6a8;
-  --color-menta-oscuro: #22b884;
-  --color-texto: #f2f7f5;
-  --color-suave: #9db0a9;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-fondo: #070908;
+  --color-panel: #111412;
+  --color-panel2: #181c19;
+  --color-borde: #262b28;
+  --color-texto: #f3f6f4;
+  --color-suave: #9aa59f;
+  --color-menta: #7fe0a8;
+  --color-menta-suave: #13221a;
+  --color-menta-hondo: #0b3d24;
+  --color-papel: #f4f4f1;
+  --color-tinta: #121513;
+  --color-calido: #f2b46b;
+  --color-mp: #00b1ea;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 html,
@@ -21,3 +27,26 @@ body {
 body {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Brillo verde de fondo, como en las placas */
+.brillo {
+  background: radial-gradient(ellipse 70% 45% at 50% 22%, rgba(40, 140, 90, 0.22), transparent 70%);
+}
+
+/* La semillita: esfera verde con hojita */
+.semilla { position: relative; flex: none; }
+.semilla .b {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e9fff2, #a8f0c8 22%, #62d197 58%, #2f8f5f);
+  box-shadow: 0 0 30px rgba(110, 230, 160, 0.45);
+}
+.semilla .l {
+  position: absolute; left: 52%; top: -18%; width: 46%; height: 20%;
+  background: #6fd39c; border-radius: 0 100% 0 100%; transform: rotate(-12deg);
+}
+.halo {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(110, 230, 160, 0.32), transparent 65%);
+}
+@keyframes latido { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+.latido { animation: latido 2.4s ease-in-out infinite; }

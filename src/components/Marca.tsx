@@ -1,11 +1,10 @@
 import Link from "next/link";
-import Semilla from "./Semilla";
 
-export default function Marca() {
+// Logo de texto: "chumbo." con el punto en verde menta.
+export default function Marca({ className = "text-xl" }: { className?: string }) {
   return (
-    <Link href="/" className="flex items-center gap-2" aria-label="Chumbo, inicio">
-      <Semilla className="h-7 w-7" />
-      <span className="text-xl font-extrabold tracking-tight">chumbo</span>
+    <Link href="/" aria-label="Chumbo, inicio" className={`font-extrabold tracking-[-0.04em] ${className}`}>
+      chumbo<span className="text-menta">.</span>
     </Link>
   );
 }

@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <rect width="200" height="200" fill="#0f1412"/>
-  <circle cx="100" cy="78" r="38" fill="#3ee6a8" opacity=".9"/>
-  <path d="M30 200c6-46 36-70 70-70s64 24 70 70z" fill="#3ee6a8" opacity=".9"/>
+  <rect width="200" height="200" fill="#f2b46b"/>
+  <text x="100" y="128" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="96" font-weight="700" fill="#5a3300">G</text>
 </svg>
