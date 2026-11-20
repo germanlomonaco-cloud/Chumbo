@@ -21,3 +21,8 @@ create index if not exists propinas_usuario_idx on public.propinas (usuario, cre
 -- Así nadie puede leer ni modificar propinas desde el navegador;
 -- sólo nuestro servidor, con la clave de servicio.
 alter table public.propinas enable row level security;
+
+-- Permisos para el servidor (service_role). Algunos proyectos nuevos de Supabase
+-- no los dan solos para tablas creadas por SQL; sin esto el servidor recibe "403".
+grant usage on schema public to service_role;
+grant select, insert, update on table public.propinas to service_role;
