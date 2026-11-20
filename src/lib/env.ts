@@ -13,5 +13,11 @@ export const env = {
   permitirProduccion: () => process.env.MP_PERMITIR_PRODUCCION === "true",
   supabaseUrl: () => requerida("SUPABASE_URL").replace(/\/+$/, ""),
   supabaseServiceKey: () => requerida("SUPABASE_SERVICE_ROLE_KEY"),
-  siteUrl: () => requerida("NEXT_PUBLIC_SITE_URL").replace(/\/+$/, ""),
+  // Dirección pública: la que cargues vos, o la que Vercel informa sola en producción.
+  siteUrl: () => {
+    const v = process.env.NEXT_PUBLIC_SITE_URL
+      || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "");
+    if (!v) throw new Error("Falta NEXT_PUBLIC_SITE_URL. Revisá .env.example.");
+    return v.replace(/\/+$/, "");
+  },
 };

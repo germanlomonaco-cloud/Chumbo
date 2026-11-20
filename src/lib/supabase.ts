@@ -12,7 +12,8 @@ async function rest<T>(path: string, init: RequestInit = {}): Promise<T> {
   const key = env.supabaseServiceKey();
   const r = await fetch(`${env.supabaseUrl()}/rest/v1/${path}`, {
     ...init,
-    headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json", Prefer: "return=representation", ...(init.headers || {}) },
+    // Las claves nuevas de Supabase (sb_secret_...) van sólo en "apikey"; las clásicas (service_role) también como Bearer.
+    headers: { apikey: key, ...(key.startsWith("sb_") ? {} : { Authorization: `Bearer ${key}` }), "Content-Type": "application/json", Prefer: "return=representation", ...(init.headers || {}) },
     cache: "no-store",
   });
   const body = await r.json().catch(() => null);
