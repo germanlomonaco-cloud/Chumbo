@@ -144,7 +144,7 @@ export default function PanelCanje() {
               <div className="mt-3 flex gap-3">
                 <span className="grid w-28 place-items-center rounded-2xl border border-borde bg-panel font-mono text-xl font-bold">CHB</span>
                 <input value={codigo} onChange={e => { setCodigo(e.target.value.toUpperCase().replace(/[^0-9A-Z]/g, "").slice(0, 6)); setRes(null); }}
-                  placeholder="7K4PQX" className={`${campo} text-center font-mono text-xl font-bold tracking-[.2em]`} autoCapitalize="characters" autoCorrect="off" />
+                  placeholder="6 letras o números" className={`${campo} text-center font-mono text-xl font-bold tracking-[.2em] placeholder:font-sans placeholder:text-base placeholder:font-normal placeholder:tracking-normal`} autoCapitalize="characters" autoCorrect="off" />
               </div>
 
               {res && !res.ok && (

@@ -18,7 +18,7 @@ export default async function Gracias({ params, searchParams }: Props) {
   const propina = await leerPropina(id).catch(() => null);
 
   return (
-    <main className="brillo min-h-dvh">
+    <main className="brillo min-h-dvh pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-10 pt-6">
         <header className="flex justify-center"><Marca /></header>
         <section className="flex flex-1 flex-col justify-center">

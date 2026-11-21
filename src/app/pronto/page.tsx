@@ -14,7 +14,7 @@ type Props = { searchParams: Promise<{ desde?: string }> };
 export default async function Pronto({ searchParams }: Props) {
   const { desde } = await searchParams;
   return (
-    <main className="brillo min-h-dvh">
+    <main className="brillo min-h-dvh pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col items-center px-5 pb-10 pt-10 text-center">
         <Semilla size={96} halo className="latido" />
         <h1 className="mt-14 text-[38px] font-bold leading-[1.05] tracking-tight">Que tu saludo no quede en un mensaje.</h1>

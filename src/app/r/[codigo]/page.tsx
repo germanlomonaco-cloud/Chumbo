@@ -19,7 +19,7 @@ export default async function RecibirRegalo({ params }: Props) {
   // QR con el código de canje (lo escanea el comercio con su celular)
   const qrSvg = ok ? await QRCode.toString(r.codigo, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#121513", light: "#f4f4f1" } }) : "";
   return (
-    <main className="brillo min-h-dvh">
+    <main className="brillo min-h-dvh pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-10 pt-6">
         <header className="flex justify-center"><Marca /></header>
         <section className="flex flex-1 flex-col justify-center">

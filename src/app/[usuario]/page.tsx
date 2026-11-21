@@ -17,7 +17,7 @@ export default async function PaginaPerfil({ params }: Props) {
   if (!perfil) notFound();
 
   return (
-    <main className="brillo min-h-dvh">
+    <main className="brillo min-h-dvh pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-10 pt-6">
         <header className="flex justify-center"><Marca /></header>
         <section className="mt-8 flex flex-1 flex-col items-center">
