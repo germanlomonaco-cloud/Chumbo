@@ -44,7 +44,7 @@ export type EstadoRegalo = "pendiente" | "aprobado" | "rechazado";
 export type Regalo = {
   id: string; codigo: string; para_nombre: string; de_nombre: string; ocasion: string;
   producto_id: string; producto_nombre: string; monto: number; mensaje: string | null; sorpresa: boolean;
-  estado: EstadoRegalo; vence: string | null; canjeado: boolean;
+  estado: EstadoRegalo; vence: string | null; canjeado: boolean; canjeado_en?: string | null;
   mp_preference_id: string | null; mp_payment_id: string | null; creado: string;
 };
 
@@ -98,3 +98,14 @@ export async function anotarEnLista(p: { nombre: string; contacto: string; tipo:
     throw e;
   }
 }
+
+// ===== Comercios y canje (funciones de la base: verifican el PIN y canjean de forma atómica) =====
+export type RespuestaCanje = {
+  ok: boolean; error?: "datos_incorrectos" | "bloqueado" | "no_existe" | "no_pagado" | "canjeado" | "vencido";
+  nombre?: string; producto?: string; para?: string; de?: string; monto?: number; vence?: string | null;
+  canjeado?: boolean; canjeado_en?: string | null;
+};
+const rpc = (fn: string, args: Record<string, string>) => rest<RespuestaCanje>(`rpc/${fn}`, { method: "POST", body: JSON.stringify(args) });
+export const comercioLogin = (slug: string, pin: string) => rpc("comercio_login", { p_slug: slug, p_pin: pin });
+export const canjeConsultar = (slug: string, pin: string, codigo: string) => rpc("canje_consultar", { p_slug: slug, p_pin: pin, p_codigo: codigo });
+export const canjeConfirmar = (slug: string, pin: string, codigo: string) => rpc("canje_confirmar", { p_slug: slug, p_pin: pin, p_codigo: codigo });
