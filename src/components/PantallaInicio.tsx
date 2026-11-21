@@ -128,13 +128,13 @@ function OpcionC() {
   );
 }
 
-export default function PantallaInicio({ opcion }: { opcion: Opcion }) {
+export default function PantallaInicio({ opcion, selector = true }: { opcion: Opcion; selector?: boolean }) {
   const [o, setO] = useState<Opcion>(opcion);
   const nav = o === "c" ? ["Inicio", "Regalar", "Mi link"] : ["Inicio", "Mis Chumbos", "Mi link"];
   return (
     <main className="brillo min-h-dvh">
       {/* Selector de opciones (sólo para comparar en la vista previa) */}
-      <div className="sticky top-0 z-20 bg-fondo/90 px-5 py-2 backdrop-blur">
+      {selector && <div className="sticky top-0 z-20 bg-fondo/90 px-5 py-2 backdrop-blur">
         <div className="mx-auto flex max-w-md items-center gap-2 text-xs">
           <span className="text-suave">Vista previa:</span>
           {(["a", "b", "c"] as Opcion[]).map(k => (
@@ -144,9 +144,9 @@ export default function PantallaInicio({ opcion }: { opcion: Opcion }) {
             </button>
           ))}
         </div>
-      </div>
+      </div>}
 
-      <div className="mx-auto flex min-h-[calc(100dvh-44px)] max-w-md flex-col px-5 pb-28 pt-3">
+      <div className={`mx-auto flex min-h-[calc(100dvh-44px)] max-w-md flex-col px-5 pb-28 ${selector ? "pt-3" : "pt-6"}`}>
         <header className="flex items-center justify-between">
           <Marca />
           <Avatar ini="GL" color="#181c19" size={36} />
