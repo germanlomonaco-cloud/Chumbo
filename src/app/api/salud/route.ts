@@ -36,7 +36,7 @@ export async function GET() {
     supabase_clave: tipoClaveSupabase(key),
     supabase_tabla_propinas: supabaseLectura,
     mp_access_token: !mp ? "falta" : mp.startsWith("TEST-") ? "de prueba (TEST-)" : mp.startsWith("APP_USR-") ? "APP_USR- (se verifica que sea de cuenta de prueba)" : "formato desconocido",
-    mp_webhook_secret: process.env.MP_WEBHOOK_SECRET ? "cargada" : "falta",
+    mp_webhook_secret: process.env.MP_WEBHOOK_SECRET ? "cargada (se verifica la firma)" : "no cargada (opcional: con IPN funciona igual)",
     sitio: process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "falta"),
   });
 }
