@@ -86,3 +86,15 @@ export async function actualizarRegalo(id: string, cambios: Partial<Regalo>) {
   });
   return filas[0] ?? null;
 }
+
+// ===== Lista de espera =====
+export async function anotarEnLista(p: { nombre: string; contacto: string; tipo: "email" | "whatsapp"; origen: string | null }) {
+  try {
+    await rest("lista_espera", { method: "POST", body: JSON.stringify(p), headers: { Prefer: "return=minimal" } });
+    return "nuevo" as const;
+  } catch (e) {
+    // Si ya estaba anotado (contacto repetido), lo tomamos como éxito.
+    if (e instanceof Error && e.message.includes("23505")) return "repetido" as const;
+    throw e;
+  }
+}
