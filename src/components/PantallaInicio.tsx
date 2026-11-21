@@ -116,7 +116,12 @@ function OpcionC() {
         ))}
       </div>
       <Link href="/german" className="mt-4 flex items-center gap-4 rounded-3xl border border-borde bg-panel p-4">
-        <span className="grid h-12 w-12 place-items-center rounded-xl bg-papel text-2xl">▦</span>
+        <span className="grid h-12 w-12 place-items-center rounded-xl bg-papel">
+          <svg viewBox="0 0 24 24" className="h-8 w-8" aria-hidden="true">
+            {[[2,2],[15,2],[2,15]].map(([x,y]) => <g key={`${x}${y}`}><rect x={x} y={y} width="7" height="7" fill="none" stroke="#121513" strokeWidth="1.6"/><rect x={x+2.3} y={y+2.3} width="2.4" height="2.4" fill="#121513"/></g>)}
+            {[[13,13],[16,13],[19,16],[13,17],[16,19],[19,20],[13,21],[21,13]].map(([x,y]) => <rect key={`${x}-${y}`} x={x} y={y} width="2" height="2" fill="#121513"/>)}
+          </svg>
+        </span>
         <span><b className="block">chumbo.app/german</b><span className="text-sm text-suave">Tu link y tu QR para recibir</span></span>
       </Link>
     </>
