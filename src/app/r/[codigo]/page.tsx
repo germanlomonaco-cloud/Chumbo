@@ -1,4 +1,5 @@
 import Link from "next/link";
+import QRCode from "qrcode";
 import type { Metadata } from "next";
 import { leerRegaloPorCodigo } from "@/lib/supabase";
 import { buscarProducto } from "@/lib/catalogo";
@@ -15,6 +16,8 @@ export default async function RecibirRegalo({ params }: Props) {
   const codigo = decodeURIComponent((await params).codigo).toUpperCase();
   const r = await leerRegaloPorCodigo(codigo).catch(() => null);
   const ok = r && r.estado === "aprobado";
+  // QR con el código de canje (lo escanea el comercio con su celular)
+  const qrSvg = ok ? await QRCode.toString(r.codigo, { type: "svg", margin: 1, errorCorrectionLevel: "M", color: { dark: "#121513", light: "#f4f4f1" } }) : "";
   return (
     <main className="brillo min-h-dvh">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pb-10 pt-6">
@@ -22,7 +25,7 @@ export default async function RecibirRegalo({ params }: Props) {
         <section className="flex flex-1 flex-col justify-center">
           {ok ? (
             <AbrirRegalo de={r.de_nombre} producto={r.producto_nombre} emoji={buscarProducto(r.producto_id)?.emoji || "🎁"}
-              mensaje={r.mensaje} codigo={r.codigo} vence={r.vence} sorpresa={r.sorpresa} />
+              mensaje={r.mensaje} codigo={r.codigo} vence={r.vence} sorpresa={r.sorpresa} qrSvg={qrSvg} />
           ) : (
             <div className="text-center">
               <h1 className="text-2xl font-bold">Este Chumbo no está disponible</h1>
