@@ -38,3 +38,51 @@ export async function actualizarPropina(id: string, cambios: Partial<Propina>) {
   });
   return filas[0] ?? null;
 }
+
+// ===== Regalos =====
+export type EstadoRegalo = "pendiente" | "aprobado" | "rechazado";
+export type Regalo = {
+  id: string; codigo: string; para_nombre: string; de_nombre: string; ocasion: string;
+  producto_id: string; producto_nombre: string; monto: number; mensaje: string | null; sorpresa: boolean;
+  estado: EstadoRegalo; vence: string | null; canjeado: boolean;
+  mp_preference_id: string | null; mp_payment_id: string | null; creado: string;
+};
+
+// Código para canjear: CHB- + 6 caracteres sin letras confusas (sin 0/O, 1/I/L).
+function nuevoCodigo() {
+  const abc = "23456789ABCDEFGHJKMNPQRSTUVWXYZ";
+  const bytes = crypto.getRandomValues(new Uint8Array(6));
+  return "CHB-" + Array.from(bytes, b => abc[b % abc.length]).join("");
+}
+
+export async function crearRegalo(r: Pick<Regalo, "para_nombre" | "de_nombre" | "ocasion" | "producto_id" | "producto_nombre" | "monto" | "mensaje" | "sorpresa">) {
+  for (let intento = 0; intento < 3; intento++) {
+    try {
+      const [fila] = await rest<Regalo[]>("regalos", { method: "POST", body: JSON.stringify({ ...r, codigo: nuevoCodigo(), estado: "pendiente" }) });
+      return fila;
+    } catch (e) {
+      // Si el código ya existía (muy improbable), probamos con otro.
+      if (!(e instanceof Error && e.message.includes("23505")) || intento === 2) throw e;
+    }
+  }
+  throw new Error("No se pudo crear el regalo");
+}
+
+export async function leerRegalo(id: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const filas = await rest<Regalo[]>(`regalos?id=eq.${id}&select=*`);
+  return filas[0] ?? null;
+}
+
+export async function leerRegaloPorCodigo(codigo: string) {
+  if (!/^CHB-[2-9A-Z]{6}$/.test(codigo)) return null;
+  const filas = await rest<Regalo[]>(`regalos?codigo=eq.${codigo}&select=*`);
+  return filas[0] ?? null;
+}
+
+export async function actualizarRegalo(id: string, cambios: Partial<Regalo>) {
+  const filas = await rest<Regalo[]>(`regalos?id=eq.${id}`, {
+    method: "PATCH", body: JSON.stringify({ ...cambios, actualizado: new Date().toISOString() }),
+  });
+  return filas[0] ?? null;
+}

@@ -32,24 +32,34 @@ export async function asegurarModoPrueba() {
 
 type Preferencia = { id: string; init_point: string; sandbox_init_point?: string };
 
-export async function crearPreferencia(p: {
-  propinaId: string; usuario: string; nombre: string; monto: number;
-}) {
+// Crea un cobro de Checkout Pro. "referencia" vuelve en el pago y nos dice qué se pagó
+// (el id de una propina, o "regalo:<id>" para un regalo).
+export async function crearCobro(p: { referencia: string; idItem: string; titulo: string; monto: number; vuelta: string }) {
   const site = env.siteUrl();
-  const vuelta = `${site}/${p.usuario}/gracias?propina=${p.propinaId}`;
   return mp<Preferencia>("/checkout/preferences", {
     method: "POST",
-    headers: { "X-Idempotency-Key": p.propinaId },
+    headers: { "X-Idempotency-Key": p.referencia },
     body: JSON.stringify({
-      items: [{ id: "propina", title: `Propina para ${p.nombre}`, quantity: 1, unit_price: p.monto, currency_id: "ARS" }],
-      external_reference: p.propinaId,
-      back_urls: { success: vuelta, pending: vuelta, failure: vuelta },
+      items: [{ id: p.idItem, title: p.titulo, quantity: 1, unit_price: p.monto, currency_id: "ARS" }],
+      external_reference: p.referencia,
+      back_urls: { success: p.vuelta, pending: p.vuelta, failure: p.vuelta },
       auto_return: "approved",
       notification_url: `${site}/api/webhooks/mercadopago`,
       statement_descriptor: "CHUMBO",
     }),
   });
 }
+
+export function crearPreferencia(p: { propinaId: string; usuario: string; nombre: string; monto: number }) {
+  return crearCobro({
+    referencia: p.propinaId, idItem: "propina", titulo: `Propina para ${p.nombre}`, monto: p.monto,
+    vuelta: `${env.siteUrl()}/${p.usuario}/gracias?propina=${p.propinaId}`,
+  });
+}
+
+// Con credenciales "TEST-" Mercado Pago usa el checkout de pruebas (sandbox).
+export const urlCheckout = (pref: Preferencia) =>
+  env.mpAccessToken().startsWith("TEST-") && pref.sandbox_init_point ? pref.sandbox_init_point : pref.init_point;
 
 export type Pago = {
   id: number; status: string; status_detail: string;

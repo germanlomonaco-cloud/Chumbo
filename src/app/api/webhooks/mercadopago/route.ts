@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { firmaValida, obtenerPago } from "@/lib/mercadopago";
-import { leerPropina, actualizarPropina, type EstadoPropina } from "@/lib/supabase";
+import { leerPropina, actualizarPropina, leerRegalo, actualizarRegalo, type EstadoPropina, type EstadoRegalo } from "@/lib/supabase";
+import { DIAS_VENCIMIENTO } from "@/lib/catalogo";
 import { semillasPara } from "@/lib/reglas";
 
-// Aviso de Mercado Pago (Webhooks o IPN). ÚNICO lugar donde una propina pasa a "aprobada".
+// Aviso de Mercado Pago (Webhooks o IPN). ÚNICO lugar donde una propina o un regalo pasan a "aprobado".
 // 1) Si el aviso viene firmado (Webhooks con clave secreta), verificamos la firma: una firma falsa se rechaza.
 //    Los avisos IPN no traen firma: se aceptan, pero igual pasan por los controles 2 y 3.
 // 2) No confiamos en lo que dice el aviso: le preguntamos a Mercado Pago el estado real del pago, con nuestro Access Token.
@@ -27,7 +28,28 @@ export async function POST(req: Request) {
 
   try {
     const pago = await obtenerPago(String(dataId));
-    const propina = pago.external_reference ? await leerPropina(pago.external_reference) : null;
+    const ref = pago.external_reference || "";
+    const rechazo = ["rejected", "cancelled", "refunded", "charged_back"].includes(pago.status);
+
+    // ----- Regalos: referencia "regalo:<id>" -----
+    if (ref.startsWith("regalo:")) {
+      const regalo = await leerRegalo(ref.slice(7));
+      if (!regalo) { console.warn("webhook: pago sin regalo", pago.id); return NextResponse.json({ ok: true }); }
+      if (pago.currency_id !== "ARS" || Number(pago.transaction_amount) !== regalo.monto) {
+        console.warn("webhook: monto o moneda no coinciden (regalo)", pago.id, regalo.id);
+        return NextResponse.json({ ok: true });
+      }
+      if (regalo.estado === "aprobado") return NextResponse.json({ ok: true });
+      const estado: EstadoRegalo = pago.status === "approved" ? "aprobado" : rechazo ? "rechazado" : "pendiente";
+      await actualizarRegalo(regalo.id, {
+        estado, mp_payment_id: String(pago.id),
+        vence: estado === "aprobado" ? new Date(Date.now() + DIAS_VENCIMIENTO * 864e5).toISOString() : null,
+      });
+      return NextResponse.json({ ok: true, estado });
+    }
+
+    // ----- Propinas: referencia = id de la propina -----
+    const propina = ref ? await leerPropina(ref) : null;
     if (!propina) { console.warn("webhook: pago sin propina", pago.id); return NextResponse.json({ ok: true }); }
 
     if (pago.currency_id !== "ARS" || Number(pago.transaction_amount) !== propina.monto) {
@@ -38,7 +60,7 @@ export async function POST(req: Request) {
     if (propina.estado === "aprobada") return NextResponse.json({ ok: true });
 
     const estado: EstadoPropina = pago.status === "approved" ? "aprobada"
-      : ["rejected", "cancelled", "refunded", "charged_back"].includes(pago.status) ? "rechazada" : "pendiente";
+      : rechazo ? "rechazada" : "pendiente";
     await actualizarPropina(propina.id, {
       estado, mp_payment_id: String(pago.id), semillas: estado === "aprobada" ? semillasPara(propina.monto) : 0,
     });

@@ -8,9 +8,9 @@ type Opcion = "a" | "b" | "c";
 
 // Datos de ejemplo para la vista previa (después salen de Supabase)
 const POPULARES = [
-  { emoji: "☕", nombre: "Café", precio: "$10.000" },
-  { emoji: "🍔", nombre: "Combo", precio: "$15.000" },
-  { emoji: "💧", nombre: "Agua", precio: "$3.000" },
+  { id: "cafe", emoji: "☕", nombre: "Café", precio: "$10.000" },
+  { id: "combo", emoji: "🍔", nombre: "Combo", precio: "$15.000" },
+  { id: "agua", emoji: "💧", nombre: "Agua", precio: "$3.000" },
 ];
 const OCASIONES = ["🎂 Feliz cumple", "🙏 Gracias", "🫶 Te extraño", "💪 Fuerza", "❤️ Te quiero", "✨ Porque sí"];
 const PARA_CUMPLE = [
@@ -37,13 +37,13 @@ function OpcionA() {
     <>
       <p className="mt-6 text-sm text-suave">Hola, Germán</p>
       <h1 className="mt-1 text-[26px] font-bold leading-tight tracking-tight">¿A quién le mandamos un Chumbo?</h1>
-      <button className="relative mt-5 w-full overflow-hidden rounded-3xl p-5 text-left text-menta-hondo"
+      <Link href="/regalar" className="relative mt-5 block w-full overflow-hidden rounded-3xl p-5 text-left text-menta-hondo"
         style={{ background: "linear-gradient(135deg,#a9f2c9,#6fd39c)" }}>
         <span className="block text-2xl font-extrabold">Regalar</span>
         <span className="mt-1 block text-sm opacity-80">Un café, un combo, una sorpresa</span>
         <span className="absolute bottom-3 right-4 text-6xl">🎁</span>
         <span className="block h-12" />
-      </button>
+      </Link>
       <div className="mt-3 grid grid-cols-2 gap-3">
         <button className="rounded-3xl border border-borde bg-panel p-4 text-left">
           <span className="text-xl">💸</span>
@@ -59,11 +59,11 @@ function OpcionA() {
       <p className="mt-7 text-xs font-bold uppercase tracking-[.08em] text-suave">Regalos populares</p>
       <div className="mt-3 grid grid-cols-3 gap-3">
         {POPULARES.map(r => (
-          <button key={r.nombre} className="rounded-3xl bg-papel p-3 text-center text-tinta">
+          <Link key={r.nombre} href={`/regalar?producto=${r.id}`} className="rounded-3xl bg-papel p-3 text-center text-tinta">
             <span className="block text-3xl">{r.emoji}</span>
             <span className="mt-1 block font-bold">{r.nombre}</span>
             <span className="block text-sm">{r.precio}</span>
-          </button>
+          </Link>
         ))}
       </div>
     </>
