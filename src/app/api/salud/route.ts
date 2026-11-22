@@ -32,7 +32,7 @@ export async function GET() {
       return `HTTP ${r.status}${b?.code ? " · " + b.code : ""}${b?.message ? " · " + String(b.message).slice(0, 80) : ""}`;
     } catch { return "no responde (revisá SUPABASE_URL)"; }
   }
-  const [supabaseLectura, regalosLectura, listaLectura, comerciosLectura] = await Promise.all([probarTabla("propinas"), probarTabla("regalos"), probarTabla("lista_espera"), probarTabla("comercios")]);
+  const [supabaseLectura, regalosLectura, listaLectura, comerciosLectura, perfilesLectura] = await Promise.all([probarTabla("propinas"), probarTabla("regalos"), probarTabla("lista_espera"), probarTabla("comercios"), probarTabla("perfiles")]);
 
   return NextResponse.json({
     supabase_url: url ? (url.endsWith(".supabase.co") ? "ok" : "no termina en .supabase.co") : "falta",
@@ -41,6 +41,7 @@ export async function GET() {
     supabase_tabla_regalos: regalosLectura,
     supabase_tabla_lista_espera: listaLectura,
     supabase_tabla_comercios: comerciosLectura,
+    supabase_tabla_perfiles: perfilesLectura,
     mp_access_token: !mp ? "falta" : mp.startsWith("TEST-") ? "de prueba (TEST-)" : mp.startsWith("APP_USR-") ? "APP_USR- (se verifica que sea de cuenta de prueba)" : "formato desconocido",
     mp_webhook_secret: process.env.MP_WEBHOOK_SECRET ? "cargada (se verifica la firma)" : "no cargada (opcional: con IPN funciona igual)",
     sitio: process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "falta"),
