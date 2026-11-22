@@ -159,9 +159,13 @@ export default function PantallaInicio({ opcion, selector = true }: { opcion: Op
       {/* Barra inferior */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-borde bg-fondo/95 backdrop-blur">
         <div className="mx-auto flex max-w-md justify-around py-4 text-sm">
-          {nav.map((n, i) => (
-            <span key={n} className={i === 0 ? "font-medium text-menta" : "text-suave"}>{i === 0 && "● "}{n}</span>
-          ))}
+          {nav.map((n, i) => {
+            const href = { Inicio: "/", Regalar: "/regalar", "Mi link": "/mi-link" }[n];
+            const clase = i === 0 ? "font-medium text-menta" : "text-suave";
+            return href
+              ? <Link key={n} href={href} className={clase}>{i === 0 && "● "}{n}</Link>
+              : <span key={n} className={`${clase} opacity-60`}>{n}</span>;
+          })}
         </div>
       </nav>
     </main>

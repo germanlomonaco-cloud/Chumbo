@@ -109,3 +109,16 @@ const rpc = (fn: string, args: Record<string, string>) => rest<RespuestaCanje>(`
 export const comercioLogin = (slug: string, pin: string) => rpc("comercio_login", { p_slug: slug, p_pin: pin });
 export const canjeConsultar = (slug: string, pin: string, codigo: string) => rpc("canje_consultar", { p_slug: slug, p_pin: pin, p_codigo: codigo });
 export const canjeConfirmar = (slug: string, pin: string, codigo: string) => rpc("canje_confirmar", { p_slug: slug, p_pin: pin, p_codigo: codigo });
+
+// ===== Perfiles (cada persona con su link para recibir propinas) =====
+export async function leerPerfil(usuario: string) {
+  const filas = await rest<{ usuario: string; nombre: string; rol: string; color: string }[]>(
+    `perfiles?usuario=eq.${encodeURIComponent(usuario)}&select=usuario,nombre,rol,color`);
+  return filas[0] ?? null;
+}
+
+export async function crearPerfil(p: { usuario: string; nombre: string; rol: string; color: string; pin: string }) {
+  return rest<{ ok: boolean; usuario?: string; error?: "ocupado" | "pin_invalido" | "datos_invalidos" }>("rpc/perfil_crear", {
+    method: "POST", body: JSON.stringify({ p_usuario: p.usuario, p_nombre: p.nombre, p_rol: p.rol, p_color: p.color, p_pin: p.pin }),
+  });
+}

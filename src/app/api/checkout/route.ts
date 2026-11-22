@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   let datos: { usuario?: string; monto?: number; mensaje?: string };
   try { datos = await req.json(); } catch { return NextResponse.json({ error: "Datos inválidos" }, { status: 400 }); }
 
-  const perfil = buscarPerfil(String(datos.usuario || ""));
+  const perfil = await buscarPerfil(String(datos.usuario || ""));
   if (!perfil) return NextResponse.json({ error: "Perfil inexistente" }, { status: 404 });
 
   const monto = Number(datos.monto);

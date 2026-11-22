@@ -12,7 +12,7 @@ type Props = { params: Promise<{ usuario: string }>; searchParams: Promise<{ pro
 // Pantalla de vuelta del checkout. Ignora lo que diga la dirección (status=approved, etc.):
 // muestra el estado guardado en nuestra base, que sólo cambia con el aviso de Mercado Pago.
 export default async function Gracias({ params, searchParams }: Props) {
-  const perfil = buscarPerfil((await params).usuario);
+  const perfil = await buscarPerfil((await params).usuario);
   if (!perfil) notFound();
   const id = (await searchParams).propina || "";
   const propina = await leerPropina(id).catch(() => null);
