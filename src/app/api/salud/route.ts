@@ -23,7 +23,7 @@ export async function GET() {
   async function probarTabla(tabla: string) {
     if (!url || !key) return "sin probar";
     try {
-      const r = await fetch(`${url}/rest/v1/${tabla}?select=id&limit=1`, {
+      const r = await fetch(`${url}/rest/v1/${tabla}?select=${tabla === "perfiles" ? "usuario" : "id"}&limit=1`, {
         headers: { apikey: key, ...(key.startsWith("sb_") ? {} : { Authorization: `Bearer ${key}` }) }, cache: "no-store",
       });
       const b = await r.json().catch(() => ({}));
