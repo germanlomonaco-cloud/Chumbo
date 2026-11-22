@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ROLES, COLORES, USUARIO_VALIDO, sugerirUsuario } from "@/lib/perfiles";
+import { ROLES, COLORES, USUARIO_VALIDO, sugerirUsuario } from "@/lib/perfil-reglas";
 import AvatarPerfil from "./AvatarPerfil";
 
 export const CLAVE_MI_PERFIL = "chumbo-mi-perfil";

@@ -160,7 +160,7 @@ export default function PantallaInicio({ opcion, selector = true }: { opcion: Op
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-borde bg-fondo/95 backdrop-blur">
         <div className="mx-auto flex max-w-md justify-around py-4 text-sm">
           {nav.map((n, i) => {
-            const href = { Inicio: "/", Regalar: "/regalar", "Mi link": "/mi-link" }[n];
+            const href = ({ Inicio: "/", Regalar: "/regalar", "Mis Chumbos": "/mis-chumbos", "Mi link": "/mi-link" } as Record<string, string>)[n];
             const clase = i === 0 ? "font-medium text-menta" : "text-suave";
             return href
               ? <Link key={n} href={href} className={clase}>{i === 0 && "● "}{n}</Link>

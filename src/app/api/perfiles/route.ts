@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { buscarPerfil, RESERVADOS, COLORES, USUARIO_VALIDO } from "@/lib/perfiles";
 import { crearPerfil, leerPerfil } from "@/lib/supabase";
+import { COOKIE_SESION, crearValorSesion, opcionesCookie } from "@/lib/sesion";
 
 // ¿Está libre este link? (para avisar mientras la persona lo escribe)
 export async function GET(req: Request) {
@@ -47,7 +48,10 @@ export async function POST(req: Request) {
       const msg = r.error === "ocupado" ? "Ese link ya está tomado, probá con otro" : "Revisá los datos e intentá de nuevo";
       return NextResponse.json({ error: msg }, { status: r.error === "ocupado" ? 409 : 400 });
     }
-    return NextResponse.json({ ok: true, usuario });
+    // Recién creado: ya queda con la sesión iniciada para ver "Mis Chumbos".
+    const res = NextResponse.json({ ok: true, usuario });
+    res.cookies.set(COOKIE_SESION, crearValorSesion(usuario), opcionesCookie);
+    return res;
   } catch (e) {
     console.error("perfiles:", e);
     return NextResponse.json({ error: "No pudimos crear tu perfil. Probá de nuevo en un rato." }, { status: 500 });

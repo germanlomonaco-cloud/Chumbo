@@ -122,3 +122,22 @@ export async function crearPerfil(p: { usuario: string; nombre: string; rol: str
     method: "POST", body: JSON.stringify({ p_usuario: p.usuario, p_nombre: p.nombre, p_rol: p.rol, p_color: p.color, p_pin: p.pin }),
   });
 }
+
+export async function perfilLogin(usuario: string, pin: string) {
+  return rest<{ ok: boolean; usuario?: string; nombre?: string; error?: "datos_incorrectos" | "bloqueado" }>("rpc/perfil_login", {
+    method: "POST", body: JSON.stringify({ p_usuario: usuario, p_pin: pin }),
+  });
+}
+
+export async function actualizarPerfil(usuario: string, cambios: { nombre: string; rol: string; color: string }) {
+  const filas = await rest<{ usuario: string }[]>(`perfiles?usuario=eq.${encodeURIComponent(usuario)}`, {
+    method: "PATCH", body: JSON.stringify(cambios),
+  });
+  return filas[0] ?? null;
+}
+
+// Propinas cobradas de una persona (las más nuevas primero)
+export async function propinasDe(usuario: string) {
+  return rest<Pick<Propina, "id" | "monto" | "mensaje" | "semillas" | "creado">[]>(
+    `propinas?usuario=eq.${encodeURIComponent(usuario)}&estado=eq.aprobada&select=id,monto,mensaje,semillas,creado&order=creado.desc&limit=500`);
+}

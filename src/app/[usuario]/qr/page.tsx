@@ -43,6 +43,7 @@ export default async function QRPerfil({ params }: Props) {
 
         <div className="print:hidden">
           <AccionesQR link={link} usuario={perfil.usuario} nombre={perfil.nombre} />
+          <Link href="/mis-chumbos" className="mt-3 block rounded-full border border-borde bg-panel py-4 text-center font-bold">Ir a Mis Chumbos</Link>
           <Link href={`/${perfil.usuario}`} className="mt-6 block text-center text-sm text-suave underline">Ver mi perfil como lo ven los demás</Link>
         </div>
       </div>

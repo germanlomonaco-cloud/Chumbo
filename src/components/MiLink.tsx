@@ -23,6 +23,7 @@ export default function MiLink() {
         <h1 className="mt-1 text-[28px] font-bold tracking-tight">Tu link de propinas</h1>
         <p className="mt-3 font-mono text-lg text-menta">/{mio.usuario}</p>
         <Link href={`/${mio.usuario}/qr`} className="mt-10 block rounded-full bg-menta py-5 text-lg font-bold text-menta-hondo">Ver mi QR</Link>
+        <Link href="/mis-chumbos" className="mt-3 block rounded-full border border-borde bg-panel py-4 font-bold">Mis Chumbos</Link>
         <Link href={`/${mio.usuario}`} className="mt-3 block rounded-full border border-borde bg-panel py-4 font-bold">Ver mi perfil</Link>
         <Link href="/" className="mt-8 text-sm text-suave underline">Volver al inicio</Link>
       </section>
