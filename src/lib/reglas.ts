@@ -6,7 +6,7 @@ export const MONTOS = [1000, 2000, 5000] as const;
 // Largo máximo del mensaje opcional
 export const MENSAJE_MAX = 140;
 
-// Semillas: 1 semilla cada $100 de propina ($1.000 = 10 semillas)
+// Puntos (en la base se guardan como "semillas"): 1 punto cada $100 de propina ($1.000 = 10 puntos)
 export const PESOS_POR_SEMILLA = 100;
 export const semillasPara = (monto: number) => Math.floor(monto / PESOS_POR_SEMILLA);
 

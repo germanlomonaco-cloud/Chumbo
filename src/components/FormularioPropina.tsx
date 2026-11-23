@@ -53,7 +53,7 @@ export default function FormularioPropina({ usuario, nombre }: { usuario: string
           ))}
         </div>
         <p className="mt-3 flex items-center justify-center gap-2 text-sm font-medium text-menta">
-          <Semilla size={14} /> Suma {semillasPara(monto)} semillas
+          <Semilla size={14} /> Suma {semillasPara(monto)} puntos
         </p>
       </div>
 

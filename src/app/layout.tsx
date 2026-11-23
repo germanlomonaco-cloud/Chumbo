@@ -7,7 +7,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "700", "800"
 
 export const metadata: Metadata = {
   title: "Chumbo",
-  description: "Dejá propinas y regalos con un QR. Cada propina suma semillas.",
+  description: "Dejá propinas y regalos con un QR. Cada propina suma puntos.",
   applicationName: "Chumbo",
   appleWebApp: { capable: true, title: "Chumbo", statusBarStyle: "black" },
 };

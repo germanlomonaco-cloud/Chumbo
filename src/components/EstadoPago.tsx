@@ -33,7 +33,7 @@ export default function EstadoPago(props: { id: string; usuario: string; nombre:
       <Semilla size={110} halo className="latido" />
       <h1 className="mt-12 text-3xl font-bold tracking-tight">¡Gracias!</h1>
       <p className="mt-3 text-lg text-suave">Tu propina de {formatoPesos(props.monto)} para {props.nombre} ya está acreditada.</p>
-      <p className="mt-6 rounded-full border border-menta bg-menta-suave px-5 py-2 text-lg font-bold text-menta">+{semillas} semillas 🌱</p>
+      <p className="mt-6 rounded-full border border-menta bg-menta-suave px-5 py-2 text-lg font-bold text-menta">+{semillas} {semillas === 1 ? "punto" : "puntos"}</p>
       <Link href={`/${props.usuario}`} className="mt-10 w-full rounded-full border border-borde py-4 text-center font-bold">Volver al perfil</Link>
     </div>
   );

@@ -40,12 +40,12 @@ export default function PanelMisChumbos({ perfil, propinas, totales, error }: { 
         </div>
       </section>
 
-      {/* Semillas */}
+      {/* Puntos */}
       <section className="mt-6 flex items-center gap-4 rounded-3xl border border-menta/40 bg-menta-suave p-5">
         <Semilla size={48} />
         <div>
           <p className="text-4xl font-extrabold leading-none text-menta">{totales.semillas.toLocaleString("es-AR")}</p>
-          <p className="mt-1 text-sm text-suave">semillas sumadas</p>
+          <p className="mt-1 text-sm text-suave">puntos sumados</p>
         </div>
       </section>
 
@@ -88,7 +88,7 @@ export default function PanelMisChumbos({ perfil, propinas, totales, error }: { 
                 <span className="shrink-0 text-xs text-suave">{p.fecha}</span>
               </div>
               {p.mensaje && <p className="mt-1.5 text-[15px] leading-snug">“{p.mensaje}”</p>}
-              <p className="mt-1.5 text-xs font-bold text-menta">+{p.semillas} {p.semillas === 1 ? "semilla" : "semillas"}</p>
+              <p className="mt-1.5 text-xs font-bold text-menta">+{p.semillas} {p.semillas === 1 ? "punto" : "puntos"}</p>
             </li>
           ))}
         </ul>

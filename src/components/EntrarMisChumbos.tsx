@@ -43,7 +43,7 @@ export default function EntrarMisChumbos() {
       <div className="mt-10 flex flex-col items-center text-center">
         <Semilla size={72} halo className="latido" />
         <h1 className="mt-10 text-[28px] font-bold tracking-tight">Mis Chumbos</h1>
-        <p className="mt-2 text-suave">Mirá las propinas que recibiste y las semillas que sumaste.</p>
+        <p className="mt-2 text-suave">Mirá las propinas que recibiste y los puntos que sumaste.</p>
       </div>
       <label className="mb-2 mt-10 block text-xs font-bold uppercase tracking-[.08em] text-suave" htmlFor="usuario">Tu link</label>
       <input id="usuario" value={usuario} onChange={e => setUsuario(e.target.value.toLowerCase().trim())} placeholder="ej.: martin-perez"
